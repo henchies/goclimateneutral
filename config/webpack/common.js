@@ -5,6 +5,7 @@ const yaml = require('js-yaml');
 const webpack = require('webpack');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const tailwindcss = require('tailwindcss');
 
 const env = process.env.NODE_ENV || 'development';
 const sharedConfig = yaml.safeLoad(fs.readFileSync('config/webpack.yml'))[env];
@@ -24,7 +25,16 @@ const cssLoaders = [
     options: {
       sourceMap: true
     }
-  }
+  },
+  {
+    loader: 'postcss-loader',
+    options: {
+      ident: 'postcss',
+      plugins: [
+        tailwindcss,
+      ],
+    },
+  },
 ];
 
 module.exports = {
