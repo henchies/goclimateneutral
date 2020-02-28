@@ -1,0 +1,25 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+html,
+body {
+  height: 100%;
+  font-size: 14px;
+}
+body {
+  font-family: 'Raleway', sans-serif;
+}
+
+.bg-brand {
+  background-color: #f3f9f9;
+  
+  &-image {
+    background-color: #f3f9f9;
+    background-image: url("../images/background-illustrated-2.png");
+  }
+}
+
+.bg-secondary {
+  background-color: #f7f5e8;
+}

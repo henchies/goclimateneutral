@@ -43,6 +43,7 @@ import 'bootstrap';
 import 'bootstrap-social/bootstrap-social.css';
 
 /* Global styling */
+import '../stylesheets/index.scss';
 import '../stylesheets/base.scss';
 import '../stylesheets/type.scss';
 import '../stylesheets/panels.scss';
