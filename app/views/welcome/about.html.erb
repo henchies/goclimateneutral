@@ -3,7 +3,7 @@
 </nav>
 
 <section class="bg-brand bg-brand-image bg-bottom bg-no-repeat bg-cover">
-  <div class="text-center pt-16 pb-48 max-w-2xl mx-auto">
+  <div class="text-center pt-16 pb-48 px-10 lg:px-0 max-w-2xl mx-auto">
     <span class="glyphicon glyphicon-large glyphicon-globe text-big-icon" aria-hidden="true"></span>
     <h1 class="text-5xl my-5"><%= title(t('about_us')) %></h1>
     <p class="text-2xl leading-normal mb-5"><%= description(t('about_us_intro')) %></p>
@@ -12,7 +12,7 @@
 </section>
 
 <section>
-  <div class="max-w-6xl mx-auto py-20">
+  <div class="max-w-6xl mx-auto py-20 px-10 lg:px-0">
     <h2 class="text-4xl mb-4 text-center"><%=t 'about_us_who_are_we' %></h2>
     <div class="flex flex-wrap justify-center">
       <% [
@@ -63,15 +63,17 @@
           <p class="text-center my-2 leading-normal">
             <%=t 'about_us_who_are_we_' + person[:key] + '_html' %>
           </p>
-          <% if person[:twitter_handle] %>
-            <p><b>Twitter:</b> <%= link_to person[:twitter_handle], 'https://twitter.com/' + person[:twitter_handle], target: "_blank", class: 'link' %></p>
-          <% end %>
-          <% if person[:instagram_handle] %>
-            <p><b>Instagram:</b> <%= link_to person[:instagram_handle], 'https://www.instagram.com/' + person[:instagram_handle], target: "_blank", class: 'link' %></p>
-          <% end %>
           <% if person[:phone_number] %>
             <p><b>Phone:</b> <%= link_to person[:phone_number], 'tel:' + person[:phone_number], class: 'link' %></p>
           <% end %>
+          <div class="flex flex-row m-1">
+            <% if person[:twitter_handle] %>
+              <div class="mx-2"><%= link_to raw('<i class="fa fa-2x fa-twitter" aria-hidden="true"></i>'), 'https://twitter.com/' + person[:twitter_handle], target: "_blank", rel: "noopener" %></div>
+            <% end %>
+            <% if person[:instagram_handle] %>
+              <div class="mx-2"><%= link_to raw('<i class="fa fa-2x fa-instagram" aria-hidden="true"></i>'), 'https://www.instagram.com/' + person[:instagram_handle], target: "_blank", rel: "noopener" %></div>
+            <% end %>
+          </div>
         </div>
       <% end %>
     </div>
@@ -79,7 +81,7 @@
 </section>
 
 <section class="bg-secondary">
-  <div class="max-w-2xl mx-auto pt-16 pb-20 text-center">
+  <div class="max-w-2xl mx-auto pt-16 pb-20 px-10 lg:px-0 text-center">
     <span class="glyphicon glyphicon-large glyphicon-question-sign text-big-icon" aria-hidden="true"></span>
     <h2 class="text-4xl my-5"><%=t 'about_us_why_do_we_exist' %></h2>
     <p class="text-xl leading-normal mb-5"><%=t 'about_us_why_do_we_exist_text' %></p>
@@ -87,7 +89,7 @@
 </section>
 
 <section class="bg-bg">
-  <div class="max-w-2xl mx-auto pt-16 pb-20 text-center">
+  <div class="max-w-2xl mx-auto pt-16 pb-20 px-10 lg:px-0 text-center">
     <span class="glyphicon glyphicon-large glyphicon-leaf text-big-icon" aria-hidden="true"></span>
     <h2 class="text-4xl my-5"><%=t 'about_us_how_do_we_stop_climate_change' %></h2>
     <p class="text-xl leading-normal mb-5"><%=t 'about_us_how_do_we_stop_climate_change_text' %></p>
