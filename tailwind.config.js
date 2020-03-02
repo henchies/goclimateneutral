@@ -1,6 +1,6 @@
 module.exports = {
   corePlugins: {
-    preflight: false,
+    preflight: false
   },
   theme: {
     fontSize: {
@@ -15,6 +15,6 @@ module.exports = {
       '5xl': '3rem',
       '6xl': '4rem',
       'big-icon': '9.375rem'
-    },
+    }
   }
 };
