@@ -6,7 +6,8 @@ RSpec.describe LifestyleCalculator do
   describe '#calculate' do
     let(:answers) do
       {
-        housing: 'apartment',
+        region: 'first',
+        home: 'apartment',
         heating: 'district',
         house_age: 'pre1920',
         green_electricity: 'yes',
@@ -45,11 +46,23 @@ RSpec.describe LifestyleCalculator do
           expect(result[category]).to eq(GreenhouseGases.new(2))
         end
 
-        it 'makes housing answer value available' do
+        it 'makes region answer value available' do
           calculator = build(
             :lifestyle_calculator,
-            :housing_options => { apartment: 10 },
-            subtotal_formula => 'housing'
+            :region_options => { first: 10 },
+            subtotal_formula => 'region'
+          )
+
+          result = calculator.calculate(answers)
+
+          expect(result[category]).to eq(GreenhouseGases.new(10))
+        end
+
+        it 'makes home answer value available' do
+          calculator = build(
+            :lifestyle_calculator,
+            :home_options => { apartment: 10 },
+            subtotal_formula => 'home'
           )
 
           result = calculator.calculate(answers)

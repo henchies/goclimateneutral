@@ -4,7 +4,8 @@ class CreateLifestyleCalculators < ActiveRecord::Migration[6.0]
       t.timestamps
       t.text :country
       t.integer :version
-      t.jsonb :housing_options
+      t.jsonb :region_options
+      t.jsonb :home_options
       t.jsonb :heating_options
       t.jsonb :house_age_options
       t.jsonb :green_electricity_options

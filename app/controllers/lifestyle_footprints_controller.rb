@@ -5,7 +5,7 @@ class LifestyleFootprintsController < ApplicationController
     calculator = LifestyleCalculator.find(params[:lifestyle_calculator_id])
 
     result = calculator.calculate(
-      params.permit(:housing, :heating, :house_age, :food, :car_type, :car_distance, :flight_hours).to_h.symbolize_keys
+      params.require(:answers).permit(:region, :home, :heating, :green_electricity, :house_age, :food, :car_type, :car_distance, :flight_hours).to_h.symbolize_keys
     )
     total = result.values.sum
 

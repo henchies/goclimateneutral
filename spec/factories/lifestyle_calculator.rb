@@ -3,7 +3,13 @@
 FactoryBot.define do
   factory :lifestyle_calculator do
     country { 'se' }
-    housing_options {
+    region_options {
+      {
+        first: 1,
+        second: 2
+      }
+    }
+    home_options {
       {
         apartment: 5,
         house: 10
@@ -33,7 +39,7 @@ FactoryBot.define do
         electricity: 0.001
       }
     }
-    housing_formula { 'IF(green_electricity = 1; housing * 0.5; housing * 2)' }
+    housing_formula { 'IF(green_electricity = 1, home * 0.5, home * 2)' }
     food_formula { 'food' }
     car_formula { 'car_type * car_distance' }
     flights_formula { 'flight_hours * 0.2' }

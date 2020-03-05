@@ -36,7 +36,7 @@ module Admin
     private
 
     def options_params
-      [:housing, :heating, :house_age, :green_electricity, :food, :car_type].map do |question|
+      [:region, :home, :heating, :house_age, :green_electricity, :food, :car_type].map do |question|
         keys = params["#{question}_options_keys"]
         values = params["#{question}_options_values"]
 

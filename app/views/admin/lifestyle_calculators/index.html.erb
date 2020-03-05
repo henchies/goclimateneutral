@@ -37,7 +37,9 @@
         <td><%= (time_tag(calculators[:published].created_at, format: '%F %R') if calculators[:published].present?) || '-' %></td>
         <td><%= (time_tag(calculators[:draft].updated_at, format: '%F %R') if calculators[:draft].present?) || '-' %></td>
         <td class="admin-actions">
-          <%= link_to 'Show published', admin_lifestyle_calculator_path(calculators[:published]) %>
+          <% if calculators[:published].present? %>
+            <%= link_to 'Show published', admin_lifestyle_calculator_path(calculators[:published]) %>
+          <% end %>
           <% if calculators[:draft].present? %>
             &nbsp; <%= link_to 'Show draft', admin_lifestyle_calculator_path(calculators[:draft]) %>
             &nbsp; <%= link_to 'Edit draft', new_admin_lifestyle_calculator_path(country: calculators[:draft].country) %>
