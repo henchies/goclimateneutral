@@ -92,6 +92,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :lifestyle_footprints, only: [:create]
+
     # Dashboard
     get 'dashboard', to: 'dashboard#index'
 
@@ -144,6 +146,7 @@ Rails.application.routes.draw do
     resources :api_keys
     resources :invoices
     resources :lifestyle_choices
+    resources :lifestyle_calculators, only: [:index, :show, :new, :create]
     resources :projects
     resources :flight_offsets, only: [:index, :show, :new, :create]
     resources :climate_report_invoices, only: [:index, :show, :edit, :update]

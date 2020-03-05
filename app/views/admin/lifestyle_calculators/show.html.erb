@@ -1,0 +1,132 @@
+<h1>Lifestyle Calculator</h1>
+
+<dl class="dl-horizontal">
+  <dt>Created:</dt>
+  <dd><%= @calculator.created_at %></dd>
+
+  <dt>Updated:</dt>
+  <dd><%= @calculator.updated_at %></dd>
+
+  <dt>Country:</dt>
+  <dd><%= ISO3166::Country.new(@calculator.country) %></dd>
+
+  <dt>Version:</dt>
+  <dd><%= @calculator.version || '<i>Draft</i>'.html_safe %></dd>
+</dl>
+
+<h3>Options</h3>
+
+<dl class="dl-horizontal">
+  <% [:housing, :heating, :house_age, :green_electricity, :food, :car_type].each do |question| %>
+    <dt><%= question %>:</dt>
+    <dd>
+      <% if (options = @calculator.send("#{question}_options"))&.any? %>
+        <ul>
+          <% options.each do |answer, value| %>
+            <li><%= answer %> = <%= value %></li>
+          <% end %>
+        </ul>
+      <% else %>
+        <i>Question skipped</i>
+      <% end %>
+    </dd>
+  <% end %>
+</dl>
+
+<h3>Formulas</h3>
+
+<dl class="dl-horizontal">
+  <% [:housing, :food, :car, :flights, :other].each do |category| %>
+    <dt><%= category %></dt>
+    <dd><code>=<%= @calculator.send("#{category}_formula") %></code></dd>
+  <% end %>
+</dl>
+
+
+<h2>Preview</h2>
+
+<%= form_with url: lifestyle_footprints_path(format: :json), html: { 'data-controller': 'lifestyle-footprint' } do |f| %>
+  <%= hidden_field_tag :lifestyle_calculator_id, @calculator.id %>
+
+  <% if @calculator.housing_options&.any? %>
+    <div class="form-group">
+      <%= f.label :housing %>
+      <%= f.select :housing, @calculator.housing_options.keys, {}, class: 'form-control' %>
+    </div>
+  <% end %>
+
+  <% if @calculator.heating_options&.any? %>
+    <div class="form-group">
+      <%= f.label :heating %>
+      <%= f.select :heating, @calculator.heating_options.keys, {}, class: 'form-control' %>
+    </div>
+  <% end %>
+
+  <% if @calculator.house_age_options&.any? %>
+    <div class="form-group">
+      <%= f.label :house_age %>
+      <%= f.select :house_age, @calculator.house_age_options.keys, {}, class: 'form-control' %>
+    </div>
+  <% end %>
+
+  <% if @calculator.green_electricity_options&.any? %>
+    <div class="form-group">
+      <%= f.label :green_electricity %>
+      <%= f.select :green_electricity, @calculator.green_electricity_options.keys, {}, class: 'form-control' %>
+    </div>
+  <% end %>
+
+  <% if @calculator.food_options&.any? %>
+    <div class="form-group">
+      <%= f.label :food %>
+      <%= f.select :food, @calculator.food_options.keys, {}, class: 'form-control' %>
+    </div>
+  <% end %>
+
+  <% if @calculator.car_type_options&.any? %>
+    <div class="form-group">
+      <%= f.label :car_type %>
+      <%= f.select :car_type, @calculator.car_type_options.keys, {}, class: 'form-control' %>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :car_distance %>
+    <%= f.text_field :car_distance, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :flight_hours %>
+    <%= f.text_field :flight_hours, class: 'form-control' %>
+  </div>
+
+  <%= f.submit 'Preview result', class: 'btn btn-primary', 'data-action': 'lifestyle-footprint#calculate' %>
+
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <dl>
+        <dt>Housing</dt>
+        <dd data-target="lifestyle-footprint.housingResult"></dd>
+        <dt>Food</dt>
+        <dd data-target="lifestyle-footprint.foodResult"></dd>
+        <dt>Car</dt>
+        <dd data-target="lifestyle-footprint.carResult"></dd>
+        <dt>Flights</dt>
+        <dd data-target="lifestyle-footprint.flightsResult"></dd>
+        <dt>Other</dt>
+        <dd data-target="lifestyle-footprint.otherResult"></dd>
+        <dt>Total</dt>
+        <dd data-target="lifestyle-footprint.total"></dd>
+        <dt>Price (monthly)</dt>
+        <dd data-target="lifestyle-footprint.price"></dd>
+      </dl>
+    </div>
+  </div>
+<% end %>
+
+<hr>
+
+<% if @calculator.version.nil? %>
+  <%= link_to 'Edit draft', new_admin_lifestyle_calculator_path(country: @calculator.country), class: 'btn btn-default' %> &nbsp;
+<% end %>
+<%= link_to 'Back', admin_lifestyle_calculators_path, class: 'btn btn-link' %>

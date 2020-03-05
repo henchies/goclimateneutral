@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Lifestyle Calculators</h1>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <h3>Add calculator</h3>
+    <p>Add new country or new version for existing country.</p>
+    <%= form_with url: new_admin_lifestyle_calculator_path, method: :get do |f| %>
+      <div class="form-group">
+        <label>
+          Country
+          <%= f.country_select :country, { include_blank: true }, class: 'form-control' %>
+        </label>
+      </div>
+      <%= f.submit 'New', name: nil, class: 'btn btn-primary' %>
+    <% end %>
+  </div>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Country</th>
+      <th>Published version</th>
+      <th>Created</th>
+      <th>Draft updated</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @calculators.each do |country, calculators| %>
+      <tr>
+        <td><%= country %></td>
+        <td><%= calculators[:published]&.version || '-' %></td>
+        <td><%= (time_tag(calculators[:published].created_at, format: '%F %R') if calculators[:published].present?) || '-' %></td>
+        <td><%= (time_tag(calculators[:draft].updated_at, format: '%F %R') if calculators[:draft].present?) || '-' %></td>
+        <td class="admin-actions">
+          <%= link_to 'Show published', admin_lifestyle_calculator_path(calculators[:published]) %>
+          <% if calculators[:draft].present? %>
+            &nbsp; <%= link_to 'Show draft', admin_lifestyle_calculator_path(calculators[:draft]) %>
+            &nbsp; <%= link_to 'Edit draft', new_admin_lifestyle_calculator_path(country: calculators[:draft].country) %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
