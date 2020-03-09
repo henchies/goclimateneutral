@@ -21,9 +21,13 @@ class LifestyleCalculator < ApplicationRecord
 
     [:region, :home, :heating, :house_age, :green_electricity, :food, :car_type].each do |question|
       options = send("#{question}_options")
-      values[question] = options[answers[question]] if options&.any?
+
+      option = options[answers[question]] if options&.any?
+      value = (BigDecimal(option) if option.present?) || 0 # TODO: Test this
+      values[question] = value
+      values["#{question}_answer".to_sym] = answers[question]
     end
 
-    values.transform_values { |v| (BigDecimal(v) if v.present?) || 0 } # TODO: Test this
+    values
   end
 end
