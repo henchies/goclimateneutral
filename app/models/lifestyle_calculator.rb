@@ -24,6 +24,6 @@ class LifestyleCalculator < ApplicationRecord
       values[question] = options[answers[question]] if options&.any?
     end
 
-    values.transform_values(&:to_i) # TODO: Test to_i
+    values.transform_values { |v| (BigDecimal(v) if v.present?) || 0 } # TODO: Test this
   end
 end
