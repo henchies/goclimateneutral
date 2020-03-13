@@ -1,7 +1,7 @@
-<h1>New flight offset</h1>
+<h1>New lifestyle calculator</h1>
 
 <%= form_with url: admin_lifestyle_calculators_path, method: :post, model: @calculator do |f| %>
-  <%= f.hidden_field :country %>
+  <%= f.hidden_field :countries %>
 
   <% if @calculator.errors.any? %>
     <div id="error_explanation">
@@ -18,29 +18,16 @@
   <div class="form-group">
     <%= f.label :country, 'Country' %>
     <p class="form-control-static">
-      <%= ISO3166::Country.new(@calculator.country) %>
+      <%= @calculator.countries.map { |c| ISO3166::Country.new(c) }.join(', ') %>
     </p>
   </div>
-
-  <%= render 'options_field', field: 'region' %>
-
-  <%= render 'options_field', field: 'home' %>
-
-  <%= render 'options_field', field: 'heating' %>
-
-  <%= render 'options_field', field: 'house_age' %>
-
-  <%= render 'options_field', field: 'green_electricity' %>
-
-  <%= render 'options_field', field: 'food' %>
-
-  <%= render 'options_field', field: 'car_type' %>
 
   <div class="panel panel-info">
     <div class="panel-heading">
       <h3 class="panel-title">Values available in formulas</h3>
     </div>
     <div class="panel-body">
+      <p>Values for all options are formulas, as well as category formulas below. In all of these fields, the following values are available to use.</p>
       <ul>
         <li><code>region</code> = value associated with option that the user selected</li>
         <li><code>home</code> = value associated with option that the user selected</li>
@@ -61,6 +48,20 @@
       </ul>
     </div>
   </div>
+
+  <%= render 'options_field', field: 'region' %>
+
+  <%= render 'options_field', field: 'home' %>
+
+  <%= render 'options_field', field: 'heating' %>
+
+  <%= render 'options_field', field: 'house_age' %>
+
+  <%= render 'options_field', field: 'green_electricity' %>
+
+  <%= render 'options_field', field: 'food' %>
+
+  <%= render 'options_field', field: 'car_type' %>
 
   <div class="form-group">
     <%= f.label :housing_formula %>
@@ -95,10 +96,18 @@
   </div>
 
   <div class="form-group">
-    <%= f.label :other_formula %>
+    <%= f.label :consumption_formula %>
     <div class="input-group">
       <div class="input-group-addon">=</div>
-      <%= f.text_field :other_formula, class: 'form-control' %>
+      <%= f.text_field :consumption_formula, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :public_formula %>
+    <div class="input-group">
+      <div class="input-group-addon">=</div>
+      <%= f.text_field :public_formula, class: 'form-control' %>
     </div>
   </div>
 

@@ -7,11 +7,24 @@ export default class LifestyleFootprintController extends Controller {
     this.postForm()
       .then((response) => response.json())
       .then((data) => {
+        if (data.error !== undefined) {
+          this.errorTarget.innerText = data.error;
+          this.housingResultTarget.innerText = '-';
+          this.foodResultTarget.innerText = '-';
+          this.carResultTarget.innerText = '-';
+          this.flightsResultTarget.innerText = '-';
+          this.consumptionResultTarget.innerText = '-';
+          this.publicResultTarget.innerText = '-';
+          this.totalTarget.innerText = '-';
+          this.priceTarget.innerText = '-';
+          return;
+        }
         this.housingResultTarget.innerText = data.housing;
         this.foodResultTarget.innerText = data.food;
         this.carResultTarget.innerText = data.car;
         this.flightsResultTarget.innerText = data.flights;
-        this.otherResultTarget.innerText = data.other;
+        this.consumptionResultTarget.innerText = data.consumption;
+        this.publicResultTarget.innerText = data.public;
         this.totalTarget.innerText = data.total;
         this.priceTarget.innerText = data.price;
       });
@@ -26,4 +39,4 @@ export default class LifestyleFootprintController extends Controller {
   }
 }
 
-LifestyleFootprintController.targets = ['housingResult', 'foodResult', 'carResult', 'flightsResult', 'otherResult', 'total', 'price'];
+LifestyleFootprintController.targets = ['housingResult', 'foodResult', 'carResult', 'flightsResult', 'consumptionResult', 'publicResult', 'total', 'price', 'error'];

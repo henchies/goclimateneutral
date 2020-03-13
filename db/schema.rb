@@ -155,7 +155,7 @@ ActiveRecord::Schema.define(version: 2020_03_03_145148) do
   create_table "lifestyle_calculators", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.text "country"
+    t.text "countries", array: true
     t.integer "version"
     t.jsonb "region_options"
     t.jsonb "home_options"
@@ -164,12 +164,12 @@ ActiveRecord::Schema.define(version: 2020_03_03_145148) do
     t.jsonb "green_electricity_options"
     t.jsonb "food_options"
     t.jsonb "car_type_options"
-    t.jsonb "values"
     t.text "housing_formula"
     t.text "food_formula"
     t.text "car_formula"
     t.text "flights_formula"
-    t.text "other_formula"
+    t.text "consumption_formula"
+    t.text "public_formula"
   end
 
   create_table "lifestyle_choices", force: :cascade do |t|

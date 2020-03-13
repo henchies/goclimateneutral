@@ -7,8 +7,8 @@
   <dt>Updated:</dt>
   <dd><%= @calculator.updated_at %></dd>
 
-  <dt>Country:</dt>
-  <dd><%= ISO3166::Country.new(@calculator.country) %></dd>
+  <dt>Countries:</dt>
+  <dd><%= @calculator.countries.map { |c| ISO3166::Country.new(c) }.join(', ') %></dd>
 
   <dt>Version:</dt>
   <dd><%= @calculator.version || '<i>Draft</i>'.html_safe %></dd>
@@ -18,25 +18,30 @@
 
 <dl class="dl-horizontal">
   <% [:region, :home, :heating, :house_age, :green_electricity, :food, :car_type].each do |question| %>
-    <dt><%= question %>:</dt>
-    <dd>
-      <% if (options = @calculator.send("#{question}_options"))&.any? %>
-        <ul>
-          <% options.each do |answer, value| %>
-            <li><%= answer %> = <%= value %></li>
-          <% end %>
-        </ul>
-      <% else %>
-        <i>Question skipped</i>
-      <% end %>
-    </dd>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title"><code><%= question %></code></h4>
+      </div>
+      <div class="panel-body">
+        <% if (options = @calculator.send("#{question}_options"))&.any? %>
+          <dl class="dl-horizontal">
+            <% options.each do |answer, value| %>
+              <dt><%= answer %></dt>
+              <dd><code>=<%= value %></code></dd>
+            <% end %>
+          </dl>
+        <% else %>
+          <i>Question skipped</i>
+        <% end %>
+      </div>
+    </div>
   <% end %>
 </dl>
 
 <h3>Formulas</h3>
 
 <dl class="dl-horizontal">
-  <% [:housing, :food, :car, :flights, :other].each do |category| %>
+  <% [:housing, :food, :car, :flights, :consumption, :public].each do |category| %>
     <dt><%= category %></dt>
     <dd><code>=<%= @calculator.send("#{category}_formula") %></code></dd>
   <% end %>
@@ -112,6 +117,7 @@
 
   <div class="panel panel-default">
     <div class="panel-body">
+      <p data-target="lifestyle-footprint.error" class="hidden-when-empty"></p>
       <dl>
         <dt>Housing</dt>
         <dd data-target="lifestyle-footprint.housingResult"></dd>
@@ -121,8 +127,10 @@
         <dd data-target="lifestyle-footprint.carResult"></dd>
         <dt>Flights</dt>
         <dd data-target="lifestyle-footprint.flightsResult"></dd>
-        <dt>Other</dt>
-        <dd data-target="lifestyle-footprint.otherResult"></dd>
+        <dt>Consumption</dt>
+        <dd data-target="lifestyle-footprint.consumptionResult"></dd>
+        <dt>Public</dt>
+        <dd data-target="lifestyle-footprint.publicResult"></dd>
         <dt>Total</dt>
         <dd data-target="lifestyle-footprint.total"></dd>
         <dt>Price (monthly)</dt>
@@ -135,6 +143,6 @@
 <hr>
 
 <% if @calculator.version.nil? %>
-  <%= link_to 'Edit draft', new_admin_lifestyle_calculator_path(country: @calculator.country), class: 'btn btn-default' %> &nbsp;
+  <%= link_to 'Edit draft', new_admin_lifestyle_calculator_path(countries: @calculator.countries), class: 'btn btn-default' %> &nbsp;
 <% end %>
 <%= link_to 'Back', admin_lifestyle_calculators_path, class: 'btn btn-link' %>

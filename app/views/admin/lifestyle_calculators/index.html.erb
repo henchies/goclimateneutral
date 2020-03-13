@@ -9,8 +9,15 @@
     <%= form_with url: new_admin_lifestyle_calculator_path, method: :get do |f| %>
       <div class="form-group">
         <label>
-          Country
-          <%= f.country_select :country, { include_blank: true }, class: 'form-control' %>
+          Countries
+          <span data-controller="template-element">
+            <span class="hidden" data-target="template-element.template">
+              <%= f.country_select 'countries[]', { include_blank: true }, class: 'form-control' %>
+            </span>
+            <span data-target="template-element.destination"></span>
+            <button type="button" class="btn btn-default" data-action="template-element#cloneToDestination">
+              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add country
+            </button>
         </label>
       </div>
       <%= f.submit 'New', name: nil, class: 'btn btn-primary' %>
@@ -21,7 +28,7 @@
 <table class="table">
   <thead>
     <tr>
-      <th>Country</th>
+      <th>Countries</th>
       <th>Published version</th>
       <th>Created</th>
       <th>Draft updated</th>
@@ -30,9 +37,9 @@
   </thead>
 
   <tbody>
-    <% @calculators.each do |country, calculators| %>
+    <% @calculators.each do |countries, calculators| %>
       <tr>
-        <td><%= country %></td>
+        <td><%= countries.map(&:to_s).join(', ') %></td>
         <td><%= calculators[:published]&.version || '-' %></td>
         <td><%= (time_tag(calculators[:published].created_at, format: '%F %R') if calculators[:published].present?) || '-' %></td>
         <td><%= (time_tag(calculators[:draft].updated_at, format: '%F %R') if calculators[:draft].present?) || '-' %></td>
@@ -42,7 +49,7 @@
           <% end %>
           <% if calculators[:draft].present? %>
             &nbsp; <%= link_to 'Show draft', admin_lifestyle_calculator_path(calculators[:draft]) %>
-            &nbsp; <%= link_to 'Edit draft', new_admin_lifestyle_calculator_path(country: calculators[:draft].country) %>
+            &nbsp; <%= link_to 'Edit draft', new_admin_lifestyle_calculator_path(countries: calculators[:draft].countries) %>
           <% end %>
         </td>
       </tr>

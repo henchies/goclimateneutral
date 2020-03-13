@@ -49,6 +49,7 @@ Metrics/BlockLength:
     - 'shared_examples'
   Exclude:
     - 'config/routes.rb'
+    - 'spec/**/*'
 
 RSpec/MultipleExpectations:
   Exclude:

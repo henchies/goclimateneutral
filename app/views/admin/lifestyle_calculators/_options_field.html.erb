@@ -2,16 +2,24 @@
     <%= label_tag "#{field}_options".to_sym %>
     <% @calculator.send("#{field}_options")&.each do |key, value| %>
       <div>
-        <%= text_field_tag "#{field}_options_keys[]", key, class: 'form-control', style: 'max-width: 300px; display: inline-block;' %>
-        =
-        <%= text_field_tag "#{field}_options_values[]", value, class: 'form-control', style: 'max-width: 300px; display: inline-block;' %>
+        <%= text_field_tag "#{field}_options_keys[]", key, class: 'form-control', style: 'max-width: 300px; display: inline-block; vertical-align: top;' %>
+        <div style="display: inline-block; width: 300px;">
+          <div class="input-group">
+            <div class="input-group-addon">=</div>
+            <%= text_field_tag "#{field}_options_values[]", value, class: 'form-control' %>
+          </div>
+        </div>
       </div>
     <% end %>
     <div data-controller="template-element">
       <div class="hidden" data-target="template-element.template">
-        <%= text_field_tag "#{field}_options_keys[]", '', class: 'form-control', style: 'max-width: 300px; display: inline-block;' %>
-        =
-        <%= text_field_tag "#{field}_options_values[]", '', class: 'form-control', style: 'max-width: 300px; display: inline-block;' %>
+        <%= text_field_tag "#{field}_options_keys[]", '', class: 'form-control', style: 'max-width: 300px; display: inline-block; vertical-align: top;' %>
+        <div style="display: inline-block; width: 300px;">
+          <div class="input-group">
+            <div class="input-group-addon">=</div>
+            <%= text_field_tag "#{field}_options_values[]", '', class: 'form-control' %>
+          </div>
+        </div>
       </div>
       <div data-target="template-element.destination"></div>
       <button type="button" class="btn btn-default" data-action="template-element#cloneToDestination">

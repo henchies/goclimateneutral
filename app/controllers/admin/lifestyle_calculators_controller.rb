@@ -12,20 +12,20 @@ module Admin
 
     def new
       @calculator = LifestyleCalculator.find_or_initialize_by(
-        country: params[:country].downcase,
+        countries: params[:countries].reject(&:blank?).map(&:downcase),
         version: nil
       )
     end
 
     def create
       @calculator = LifestyleCalculator.find_or_initialize_by(
-        country: params[:lifestyle_calculator][:country],
+        countries: params[:lifestyle_calculator][:countries].split(' '),
         version: nil
       )
 
       @calculator.attributes =
         params.require(:lifestyle_calculator).permit(
-          :country, :housing_formula, :food_formula, :car_formula, :flights_formula, :other_formula
+          :country, :housing_formula, :food_formula, :car_formula, :flights_formula, :consumption_formula, :public_formula
         ).merge(options_params)
 
       render(:new) && return unless @calculator.save
@@ -43,16 +43,22 @@ module Admin
         options = keys&.each_with_index&.map { |k, i| [k, values[i]] }&.to_h || {}
         options.reject! { |k, _| k.empty? }
 
-        ["#{question}_options", options]
+        ["#{question}_options", (options unless options.empty?)]
       end.to_h
     end
 
     def calculators
-      p = published_calculators.map do |c|
-        [ISO3166::Country.new(c.country), { published: c }]
+      p = published_calculators.map do |calculator|
+        [
+          calculator.countries.map { |c| ISO3166::Country.new(c) },
+          { published: calculator }
+        ]
       end.to_h
-      d = draft_calculators.map do |c|
-        [ISO3166::Country.new(c.country), { draft: c }]
+      d = draft_calculators.map do |calculator|
+        [
+          calculator.countries.map { |c| ISO3166::Country.new(c) },
+          { draft: calculator }
+        ]
       end.to_h
 
       d.deep_merge(p)
@@ -61,10 +67,10 @@ module Admin
     # TODO: Move to model
     def published_calculators
       LifestyleCalculator.where(<<~SQL)
-        (country, version) IN (
-          SELECT country, MAX(version)
+        (countries, version) IN (
+          SELECT countries, MAX(version)
           FROM lifestyle_calculators
-          GROUP BY country
+          GROUP BY countries
         )
       SQL
     end
