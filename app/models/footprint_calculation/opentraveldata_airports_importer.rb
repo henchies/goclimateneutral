@@ -12,10 +12,10 @@ module FootprintCalculation
     def import
       CSV.open(@airports_csv_path, 'w') do |csv|
         csv << %w[iata_code name name_sv latitude longitude]
-
         por_public_airports.each do |line|
+          name = line['city_name_list'] ? line['name'] + ' (' + line['city_name_list'] + ')' : line['name']
           csv << [
-            line['iata_code'], line['name'], parse_swedish_name(line['alt_name_section']),
+            line['iata_code'], name, parse_swedish_name(line['alt_name_section']),
             line['latitude'], line['longitude']
           ]
         end
