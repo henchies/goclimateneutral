@@ -19,6 +19,7 @@ export default class LifestyleFootprintController extends Controller {
           this.priceTarget.innerText = '-';
           return;
         }
+        this.errorTarget.innerText = '';
         this.housingResultTarget.innerText = data.housing;
         this.foodResultTarget.innerText = data.food;
         this.carResultTarget.innerText = data.car;
